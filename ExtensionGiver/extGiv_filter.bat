@@ -1,6 +1,6 @@
 @echo off
 title extGiv_filter : The files without extension matching ^for user input
-
+REM Make sure we start from the current directory if script is launched as Admin
 cd %~dp0
 :start
 cls
@@ -10,9 +10,9 @@ set /a files=0
 echo.
 set /p "filter=Expression to find : "
 echo.
-REM check if user entered at least one char
+REM Check if user entered at least one char
 if [%filter%]==[] goto nothing_written
-
+REM Use recursive FOR loop to count files in current and children directories
 for /R "%CD%" %%A in (*%filter%*.) do set /a files+=1
 if %files% equ 0 goto no_match
 
@@ -20,7 +20,7 @@ echo %files% file(s) matching for your input.
 echo What extension to give them ?
 echo.
 set /p "renameChoice=Enter your choice (for instance : jpg) : "
-
+REM Use recursive FOR loop to rename files in current and children directories
 for /R "%CD%" %%B in (*%filter%*.) do ren "%%B" "%%~nB.%renameChoice%"
 
 echo.
